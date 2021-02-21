@@ -1,0 +1,908 @@
+% latex uft-8
+\documentclass[uplatex,a4paper,11pt,oneside,openany]{jsbook}
+%
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{ascmac}
+\usepackage{setspace}
+\usepackage{here}
+\usepackage{listings,jlisting} %日本語のコメントアウトをする場合jlistingが必要
+%ここからソースコードの表示に関する設定
+\usepackage{xcolor,comment}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\begin{comment}
+\lstset{
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  firstnumber=1000,                % start line enumeration with line 1000
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+\end{comment}
+
+%ここからソースコードの表示に関する設定
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  numbers=left,
+  frame=single,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{custompython}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  numbers=left,
+  frame=single,
+  xleftmargin=\parindent,
+  language=Python,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customjava}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  numbers=left,
+  frame=single,
+  xleftmargin=\parindent,
+  language=java,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=custompython}
+
+\makeatletter
+\def\ps@plainfoot{%
+  \let\@mkboth\@gobbletwo
+  \let\@oddhead\@empty
+  \def\@oddfoot{\normalfont\hfil-- \thepage\ --\hfil}%
+  \let\@evenhead\@empty
+  \let\@evenfoot\@oddfoot}
+  \let\ps@plain\ps@plainfoot
+\renewcommand{\chapter}{%
+  \if@openright\cleardoublepage\else\clearpage\fi
+  \global\@topnum\z@
+  \secdef\@chapter\@schapter}
+\makeatother
+%
+\newcommand{\maru}[1]{{\ooalign{%
+\hfil\hbox{$\bigcirc$}\hfil\crcr%
+\hfil\hbox{#1}\hfil}}}
+%
+\setlength{\textwidth}{\fullwidth}
+\setlength{\textheight}{40\baselineskip}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.55in}
+%
+\begin{document}
+% START DOCUMENT
+%
+% COVER
+\begin{center}
+  \huge \par
+  \vspace{15mm}
+  \huge \par
+  \vspace{15mm}
+  \LARGE Tic Tac Toe (GUI - Python) \par
+  \vspace{100mm}
+  \Large \date \par
+  \vspace{15mm}
+  \Large \par
+  \vspace{10mm}
+  \Large S.Matoike \par
+  \vspace{10mm}
+\end{center}
+\thispagestyle{empty}
+\clearpage
+\addtocounter{page}{-1}
+\newpage
+\setcounter{tocdepth}{3}
+%
+\tableofcontents
+%
+\chapter{Pythonによる三目並べ }
+
+三目並べは「二人零和有限確定完全情報ゲーム」と呼ばれるゲームに分類されます．
+簡単に言うと「勝敗は偶然に左右されず，最善手を打てばどちらかが勝つまたは引き分けになるゲーム」のことです．
+他にもリバーシ，チェッカー，チェス，将棋に囲碁などもこのゲームに分類されます．
+
+初めに三目並べというゲームについて定義をしておきます．
+
+三目並べ:
+3×3の格子上に二人のプレイヤーが「O」「X」を配置し、自分のマークを先に3つ並べた方が勝ちです．
+
+\section{GUI版三目並べ}
+
+新しいプロジェクトを開始することにしましょう
+
+まずは、コンピュータが乱数で石を置いてくる単純な方法を実現します
+
+%\begin{center}
+ % \includegraphics[width=0.4\hsize]{tictactoe.png}
+%\end{center}
+
+\subsection{Params.py}
+
+今回は、Params.pyというファイルに、
+ParamsクラスとStateクラスという、2つのクラスを定義しておきます
+
+\begin{lstlisting}[caption=Params.py,label=prog05-1]
+from enum import auto
+
+class Params:
+    HUMAN_ID = auto()
+    MACHINE_ID = auto()
+    EMPTY_ID = auto()
+
+class State:
+    GAME = auto()
+    MACHINE_WIN = auto()
+    HUMAN_WIN = auto()
+    DRAW = auto()
+\end{lstlisting}%
+
+Paramsクラスには、盤面に置く石の識別情報、
+HUMAN\_IDとMACHINE\_ID、及び空きスロットを識別するEMPTY\_IDの3つの識別子を持たせます
+
+Stateクラスには、盤面の状態＝ゲームの進行状況を示す定数、
+即ち、GAMEはゲーム進行中の状態、
+HUMAN\_WINは人が勝った状態、MACHINE\_WINはコンピュータが勝った状態、
+DRAWは引き分けの状態を表す定数として保持させます
+
+いずれのクラスも、auto()という関数を使って自動的に重複しない値を持たせることができています
+
+auto()によって自動的に区別された値が割り振られるため、
+プログラム中で変数名を参照していく以上、それらの値そのものが
+どのような値なのかは知らなくても問題はありませんね
+
+また、これらはクラス変数と呼ばれ、「クラス名.変数名」という形で使うことができて、
+このクラスから導出されるオブジェクトでは共通に持っている変数になります
+
+オブジェクト毎に持たせているオブジェクト変数「self.変数名」とは別の変数ですので、
+区別して理解するようにしましょう
+
+\subsection{Screenクラス}
+
+GUIにするので、pygameでWindow画面を用意するためのScreenクラスを作ります
+
+\begin{lstlisting}[caption=class Screen,label=prog05-1]
+import pygame
+
+class Screen:
+    def __init__(self, wh=(600,600), bgcolor=(0,0,0)):
+        self.WIDTH = wh[0]
+        self.HEIGHT = wh[1]
+        self.COLOR = bgcolor
+        self.SIZE = (self.WIDTH, self.HEIGHT)
+        self.surface = pygame.display.set_mode(self.SIZE)
+        self.SLOTW = self.WIDTH//3
+        self.SLOTH = self.HEIGHT//3
+
+    def fill(self):
+        self.surface.fill(self.COLOR)
+        BLACK = (0,0,0)
+        for i in range(1,3):
+            startp = (0, self.SLOTH*i)
+            endp = (self.WIDTH, self.SLOTH*i)
+            pygame.draw.line(self.surface, BLACK, startp, endp)
+            startp = (self.SLOTW*i, 0)
+            endp = (self.SLOTW*i, self.HEIGHT)
+            pygame.draw.line(self.surface, BLACK, startp, endp)
+
+    def caption(self, str):
+        pygame.display.set_caption(str)
+\end{lstlisting}%
+
+コンストラクタへの引数で、
+盤面のサイズと背景色を受け取ることができますが、
+特に指定しない場合にはデフォルト値が用いられる様にしています
+
+三目並べは3ｘ3のスロットを持つ盤面ですので、
+そのための描画をfill(）メソッドで行っています
+
+caption()メソッドでは、引数で受け取った文字列をWindowのタイトルバーに表示できるようにしています
+
+\subsection{Boardクラス}
+
+Boardクラスは、Screenクラスを継承させるようにしていますので、
+Screenクラスもプロパティやメソッドを、あたかもBoardクラスで用意したかのように使うことができます
+
+Boardクラスのコンストラクタでは、引数で盤面のサイズ、背景色、キャプションに表示する文字列を受け取ることができるようにしていますが、
+時に指定しなかった場合にデフォルト値が使われるように記述しています
+
+Boardクラスのコンストラクタの冒頭で、Screenクラスのコンストラクタを呼び出して、Screenの初期化を実行し、
+キャプションの表示、そして盤面の実態である3ｘ3＝9つのEMPTY要素を持つboardという名のリストを用意しています
+
+また、ゲームの状態をself.stateに持たせることとし、ゲーム進行中の状態GAMEを初期状態として代入しています
+
+\begin{lstlisting}[caption=class Board,label=prog05-1]
+import pygame
+from Screen import Screen
+from Params import State,Params
+
+class Board( Screen ):
+    def __init__(self, wh=(300,300), color=(200,200,0), str='Tic-Tac-Toe'):
+        super().__init__(wh, color)
+        self.caption(str)
+        self.board = [Params.EMPTY_ID for _ in range(9)]
+        self.state = State.GAME
+
+    def draw(self):
+        self.fill()
+        N = 3
+        RADIUS = int(self.SLOTW*0.2)
+        BLACK = (0,0,0)
+        for ypos in range(N):
+            yc = ypos * self.SLOTH + self.SLOTH // 2
+            for xpos in range(N):
+                xc = xpos*self.SLOTW + self.SLOTW // 2
+                i = ypos * N + xpos
+                if self.board[i] == Params.HUMAN_ID:
+                    pygame.draw.circle(self.surface, BLACK, (xc,yc), RADIUS, 3)
+                elif  self.board[i] == Params.MACHINE_ID:
+                    startp = (xc - RADIUS, yc - RADIUS)
+                    endp = (xc + RADIUS, yc + RADIUS)
+                    pygame.draw.line(self.surface, BLACK, startp, endp, 3)
+                    startp = (xc + RADIUS, yc - RADIUS)
+                    endp = (xc - RADIUS, yc + RADIUS)
+                    pygame.draw.line(self.surface, BLACK, startp, endp, 3)
+
+    def winner(self):
+        def scan(n1, n2, n3):
+            p = self.board[n1] != 0 and \
+                self.board[n1] == self.board[n2] and \
+                self.board[n1] == self.board[n3]
+            if p:
+                if self.board[n1]==Params.HUMAN_ID:
+                    self.state = State.HUMAN_WIN
+                elif self.board[n1]==Params.MACHINE_ID:
+                    self.state = State.MACHINE_WIN
+            else:
+                if not self.vacant():
+                    self.state = State.DRAW
+                else:
+                    self.state = State.GAME
+            return p
+        #
+        return scan(0, 1, 2) or scan(3, 4, 5) or scan(6, 7, 8) or \
+               scan(0, 3, 6) or scan(1, 4, 7) or scan(2, 5, 8) or \
+               scan(0, 4, 8) or scan(2, 4, 6)
+
+    def vacant(self):
+        empty = []
+        for n, slot in enumerate(self.board):
+            if slot == Params.EMPTY_ID:
+                empty.append(n)
+        return empty
+\end{lstlisting}%
+
+draw()メソッドは、盤面boardリストの状態をWindowのScreen上に描画しています
+
+boardリストの要素がHUMAN\_IDと一致するならdraw.circle()で○を描き、
+MACHINE\_IDと一致するならdraw.line()を使って×を描いています
+
+winner()メソッドでは、ゲームの勝敗、引き分け、ゲーム進行中の判別をして、
+self.stateプロパティにそれぞれの値を設定しています
+
+winner()メソッドの中に持っているローカルなscan()関数が受け取る3つのスリット番号を見て、
+boardリストの該当するスロットに入っている石が同じ識別子かどうかを判定しています
+
+同じだったら、その石がHUMAN\_IDなのかMACHINE\_IDなのかを判別して、勝者をself.stateに設定します
+
+違っていたら、石を置く場所が残っているかどうかを調べ、残っていないないなら引き分け、
+残っているようならゲーム継続の状態だとしています
+
+scan()が返す値がTrueなら、winnerの返す値もTrueになるので、このとき勝敗がついたという意味になります
+
+vacant()メソッドは、CUIでも説明した空きスロットのリストを返すメソッドです
+
+\subsection{Machineクラス}
+
+Machineクラスのput\_stone()メソッドでは、
+まず、空きスロットのリストを取得し、そのリスト内の要素を乱数で選んで、
+boardリスト上のその位置に、MACHINE\_IDを代入しています
+
+Trueを返した場合は石を普通に置いた場合、Falseを返すのは盤面に空きがなかった場合です
+
+\begin{lstlisting}[caption=class Machine,label=prog05-1]
+from random import randint
+from Params import Params
+
+class Machine():
+    def __init__(self, name):
+        self.name = name
+
+    def put_stone(self, board):
+        vacant = board.vacant()
+        if not vacant:
+            return False
+        n = randint(0, len(vacant)-1)
+        board.board[ vacant[n] ] = Params.MACHINE_ID
+        return True
+\end{lstlisting}%
+
+\subsection{Humanクラス}
+
+Humanクラスのput\_stone()メソッドでは、まず
+空きスロットのリストを取得し、空きがないならFalseで戻ります
+
+空きがある場合は、put\_stone()メソッドの中に、
+ローカルに定義したget\_slot()関数を呼びだし、その
+引数に、マウスがクリックした盤面の座標をタプルの形で渡します
+
+get\_slot()関数は、boardやスロットのサイズを元に、
+マウスがクリックしたのがどのスロット上なのかを求めて、
+そのスロット番号を返しています
+
+戻されたスロット番号が、空きスロットのリストに含まれていたなら、
+boardのその場所にHUMAN\_IDを代入してTrueで戻ります
+
+マウスでクリックしたスロット番号が、空きスロットリストに含まれていないなら、
+それは、既に他の石が置かれているスロットだと言うことになりますから、
+もう一度クリックでスロットを選び直して下さいという意味で、Noneを返しています
+
+\begin{lstlisting}[caption=class Human,label=prog05-1]
+from Params import Params
+
+class Human:
+    def __init__(self, name):
+        self.name = name
+
+    def put_stone(self, board, pos=(-1,-1)):
+        def get_slot(xy):
+            x, y = xy[0], xy[1]
+            N = 3
+            for ypos in range(N):
+                y0 = board.SLOTH * ypos
+                y1 = board.SLOTH * (ypos + 1)
+                for xpos in range(N):
+                    x0 = board.SLOTW * xpos
+                    x1 = board.SLOTW * (xpos + 1)
+                    if y0 < y < y1 and x0 < x < x1:
+                        return ypos * N + xpos
+            return -1
+        vacant = board.vacant()
+        if not vacant:
+            return False
+        n = get_slot(pos)
+        if n in vacant:
+            board.board[n] = Params.HUMAN_ID
+        else:
+            return None
+        return True
+\end{lstlisting}%
+
+\subsection{Gameクラス}
+
+Gameクラスのコンストラクタでは、引数turnに文字列を受け取り、それによって先手と後手を決めています
+
+change\_tuen()メソッドは、手番を交代します
+
+fine()メソッドは、このアプリケーションを終了させるときのメソッドで、Window上のQUITのエベントを受け取ったときに呼び出されます
+
+キーボードイベントの取得部分で、MOUSEBUTTONUPを拾っており、
+humanオブジェクトのput\_stone()メソッドにクリックした座標event.posを渡しています
+
+judge()メソッドは、盤面の状態boardオブジェクトのstateプロパティの値を見て、
+勝敗が決したのか、引き分けなのか、ゲーム思考の継続なのかを判定し、
+ゲーム進行中の時だけTrueを、そうでない時はFalseを返しています
+
+start()メソッドはゲームの進行そのもので、以下を繰り返しています
+
+①キーイベントをチェックしてHUMANの手番ならこの中でHUMANがスロットを選ぶことになります
+②盤面の状態を描画します
+③MACHINEの手番なら、machineオブジェクトのput\_stone()メソッドを呼び出しています
+④勝敗の判定をして、⑤画面を更新します
+
+\begin{lstlisting}[caption=class Game,label=prog05-2]
+import sys
+import pygame
+from pygame.locals import QUIT, MOUSEBUTTONUP
+from Board import Board
+from Human import Human
+from Machine import Machine
+from Params import State
+
+class Game:
+    def __init__(self, turn='human'):
+        pygame.init()
+        self.board = Board()
+        self.human = Human('Taro')
+        self.machine = Machine('Computer')
+        self.turn = False if turn=='human' else True
+        self.clock = pygame.time.Clock()
+        self.FPS = 10
+
+    def change_turn(self):
+        self.turn = not self.turn
+
+    def fine(self):
+        pygame.quit()
+        sys.exit()
+
+    def key_event(self):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                self.fine()
+            elif event.type == MOUSEBUTTONUP:
+                if not self.turn:
+                    p = self.human.put_stone(self.board, event.pos)
+                    if p:
+                        self.change_turn()
+                    elif p==False:
+                        pass    # DRAW
+                    else:
+                        pass
+
+    def judge(self):
+        result = False
+        if self.board.winner():
+            if self.board.state == State.MACHINE_WIN:
+                self.board.caption('Computer won the game!')
+            elif self.board.state == State.HUMAN_WIN:
+                self.board.caption('You won!')
+        else:
+            if self.board.state == State.DRAW:
+                self.board.caption('Draw!')
+            elif self.board.state == State.GAME:
+                result = True
+        return result
+
+    def start(self):
+        while True:
+            self.key_event()
+            self.board.draw()
+            if self.turn:
+                if self.machine.put_stone(self.board):
+                    self.change_turn()
+            self.judge()
+            pygame.display.update()
+            self.clock.tick(self.FPS)
+\end{lstlisting}%
+
+\subsection{main.py}
+
+先手が誰なのかを、Gameクラスのコンストラクタに指示しています
+
+\begin{lstlisting}[caption=main.py,label=prog05-3]
+from Game import Game
+
+if __name__ == '__main__':
+    sente = 'human'
+    game = Game( turn=sente )
+    game.start()
+\end{lstlisting}%
+
+\section{MiniMax法}
+
+ここまでコンピュータが採用してきた戦略は、「空いているスロットの中から乱数で選んだ場所に石を置く」という単純なものでした
+
+ここでは、絶対に負けないコンピュータ、
+（人が最善の手をとった場合に引き分けたとしても負けることはありません）を実現していきます
+
+\subsection{mainの変更}
+
+Gameクラスのインスタンスgameを生成する際、
+コンストラクタへの引数で、先手は'human'か'machine'か、
+コンピュータの採る戦略は乱数'random'か'minimax'かを指定するように直します
+
+\begin{lstlisting}[caption=main.py,label=minimax00]
+from Game import Game
+from Params import Params
+
+if __name__ == '__main__':
+    sente = 'machine'           # 'machine' or 'human'
+    senryaku = 'minimax'        # 'random' or 'minimax'
+    game = Game( turn=sente, strategy=senryaku )
+    game.start()
+\end{lstlisting}
+
+\subsection{Gameクラスの変更}
+
+Gameクラスのコンストラクタにおいて、MACHINEが採る戦略を引数strategyで受け取り、
+それをMachineクラスのコンストラクタに渡しています
+
+\begin{lstlisting}[caption=Game.py,label=minimax02]
+import sys
+import pygame
+from pygame.locals import QUIT, MOUSEBUTTONUP
+from Board import Board
+from Human import Human
+from Machine import Machine
+from Params import State
+
+class Game:
+    def __init__(self, turn='human', strategy='random'):
+        pygame.init()
+        self.board = Board()
+        self.human = Human('Taro')
+        self.machine = Machine('Computer', strategy)
+        self.turn = False if turn=='human' else True
+        self.clock = pygame.time.Clock()
+        self.FPS = 10
+    ・
+    以下に変更なし
+    ・
+    ・
+\end{lstlisting}
+
+\subsection{Boardクラスの変更}
+
+次の2つのメソッドは、MiniMax戦略で使うために追加します
+
+can\_put()メソッドは、引数で受け取った番号のスロットが空いているかどうかを返します
+
+undo()メソッドは、一旦石を置いたスロットを、元の空きスロットに戻すメソッドです
+
+デバッグのために用意したメソッドです（完成したら不要です）
+
+debug\_board()メソッドは、デバッグ用に現在の盤面の状態をファイル出力するメソッドです
+
+\begin{lstlisting}[caption=Board.py,label=minimax04]
+import pygame
+from Screen import Screen
+from Params import State,Params
+
+class Board( Screen ):
+    def __init__(self, wh=(300,300), color=(200,200,0), str='Tic-Tac-Toe'):
+        ・
+        変更なし
+        ・
+        ・
+    def draw(self):
+        ・
+        変更なし
+        ・
+        ・
+    def winner(self):
+        ・
+        変更なし
+        ・
+        ・
+    def vacant(self):
+        ・
+        変更なし
+        ・
+        ・
+    # 以下を追加
+    def undo(self, n):
+        self.board[n] = Params.EMPTY_ID
+
+    def can_put(self, n):
+        if self.board[n]==Params.EMPTY_ID:
+            return True
+        return False
+
+    # ボードを表示する for Debug
+    def debug_board(self, seq, debugstring):
+        str0 = '\n('+str(seq)+')'
+        tmp = []
+        for i in range(9):
+            if self.board[i] == Params.EMPTY_ID:
+                tmp.append(' ')
+            elif self.board[i] == Params.HUMAN_ID:
+                tmp.append('o')
+            elif self.board[i] == Params.MACHINE_ID:
+                tmp.append('x')
+        str1 =  '\n{0[0]}|{0[1]}|{0[2]}\t<-----\t0|1|2'\
+                '\n{0[3]}|{0[4]}|{0[5]}\t<-----\t3|4|5'\
+                '\n{0[6]}|{0[7]}|{0[8]}\t<-----\t6|7|8\n'.format(tmp)
+        str2 = str0 + str1 + debugstring + '\n'
+        with open('textfile.txt', 'a', encoding='utf-8') as f:
+            f.write(str2)
+\end{lstlisting}
+
+\subsection{Machineクラスの変更}
+
+Machineクラスのコンストラクタで、戦略が'random'か'minimax'かを受け取っています
+
+Strategyクラスを継承しており、MiniMaxの具体的な戦略のプログラムコードは
+上位クラスのStrategyに記述することにします
+
+put\_stone()メソッドでは、
+①空きスロットのリストvacantを取得し、
+②空きがないなら③石を置けないのでFalseで返ります。
+④strategyが'random'だった場合、
+⑤乱数でvacantのインデックスnを選び、
+⑥vacantのn番目にあるスロット番号に石を置きます。
+⑦strategyが'minimax'だった場合、
+⑧MiniMax法によるベストな手をスロット番号nで受け取り、
+⑨そこに石を置きます
+
+\begin{lstlisting}[caption=Machine.py,label=minimax06]
+from random import randint
+from Params import Params
+from Strategy import Strategy
+
+class Machine( Strategy ):
+    def __init__(self, name, strategy):
+        super().__init__()
+        self.name = name
+        self.strategy = strategy
+
+    def put_stone(self, board):
+        vacant = board.vacant()
+        if not vacant:
+            return False
+        if self.strategy=='random':
+            n = randint(0, len(vacant)-1)
+            board.board[ vacant[n] ] = Params.MACHINE_ID
+        elif self.strategy=='minimax':
+            n = self.bestMove(board, vacant)
+            board.board[ n ] = Params.MACHINE_ID
+        return True
+\end{lstlisting}
+
+\subsection{Strategyクラスを追加}
+
+ここにMiniMax戦略のコードをまとめて記述します
+
+bestMove()メソッドでは、
+①引数で空のスロット番号のリストvacantを受け取り、
+②そのリストの要素の全てについて
+③順に試して
+④その手を評価していきます（MaximizerであるMachineが③で石を置いた直後ですから、次はHuman即ちMinimizerの手番ですよ、という意味でFalseを引数に指示しています）
+⑤高い評価値の得られたスロット番号は、
+⑥bestMoveの候補として更新していきます
+⑦③で選んだ手を元の空のスロットに戻して、
+③次の手を置いてみて④評価することを繰り返します
+
+minimax() メソッドでは、
+①まず、boardインスタンスのwinner()メソッドを呼んで現在の盤面の状態が、
+ゲーム進行中（GAME）なのか、勝敗が決した（MACHINE\_WINかHUMAN\_WIN）のか、引き分け（DRAW）だったのかを判定します
+②ゲーム進行中（GAME）でないなら、③評価関数であるローカルなevaluate()メソッドを呼びだし、結果を返します
+④ゲーム進行中ならば、⑤全てのスロット番号を順に選んで、⑥そのスロットが空で石を置けるかどうかを判定し、置けるならば、
+⑦そのスロットに石を置きます（Maximizer=Machine='×'か、Minimizer=Human='○'かによって置く石は違います）
+⑧再帰的にminimax()メソッドを呼び出します（isMaximizingPlayerをnotとして引数に指示し、
+ターンを交互に割り当てるようにしています）⑨bestValを更新していきます。⑩石を置いた番号のスロットを空に戻します
+
+minimax()メソッドの中に定義された評価関数のevaluate()は、
+ゲームが進行状態（GAME）でない場合に呼び出されるので、
+Machineが勝った場合（MACHINE\_WIN）、Humanが勝った場合（HUMAN\_WIN）、
+引き分けだった場合（DRAW）に、それぞれ評価値を返しています
+
+
+\begin{lstlisting}[caption=Strategy.py,label=minimax07]
+from Params import Params, State
+
+class Strategy:
+    INFINITY = 10000
+    def __init__(self):
+        pass
+
+    def bestMove(self, board, vacant):
+        bestEval = -Strategy.INFINITY
+        bestMove = -1
+        self.debug_seq = 0
+        for n in vacant:
+            board.board[n] = Params.MACHINE_ID
+            eval = self.minimax(board, 0, False)
+            if bestEval<eval:
+                bestEval = eval
+                bestMove = n
+            board.undo(n)
+        return bestMove
+
+    def minimax(self, board, depth, isMaximizingPlayer):
+        def evaluate(depth):
+            if board.state == State.MACHINE_WIN:
+                board.state = State.GAME
+                return 10-depth     #return 10
+            elif board.state == State.HUMAN_WIN:
+                board.state = State.GAME
+                return depth-10     #return -10
+            else:
+                self.state = State.GAME
+                return 0
+
+        board.winner()
+        if board.state != State.GAME:
+            return evaluate(depth)
+        bestVal = -Strategy.INFINITY if isMaximizingPlayer else +Strategy.INFINITY
+        for n in range(9):
+            if board.can_put(n):
+                board.board[n] = Params.MACHINE_ID if isMaximizingPlayer else Params.HUMAN_ID
+                value = self.minimax(board, depth + 1, not isMaximizingPlayer)
+                bestVal = max(value, bestVal) if isMaximizingPlayer else min(value, bestVal)
+                board.undo(n)
+        return bestVal
+\end{lstlisting}
+
+\section{Alpha Bata Pruning}
+
+Alpha Beta Pruningは新しい手法のアルゴリズムではなく、MiniMax法を最適化したものにすぎません
+
+MiniMax法は、勝敗が決着するまで全ての手を試行して、その上で最善手を選ぶため、
+引き分けることはあっても負けることはありません。
+
+しかし、全ての手を試行するというのは、多くのゲームで現実的な方法にはなりません。
+三目並べの様な小規模のゲームでは、それほど問題になりませんが、リバーシなどになると
+思考時間がかかりすぎて実用的ではありません
+
+そこで、MiniMax法の試行を途中で合理的に打ち切る手法がアルファ刈りベータ刈りと呼ばれる手法です
+
+\subsection{mainの変更}
+
+Gameクラスのインスタンスgameを生成する際、
+コンストラクタへの引数で、先手は'human'か'machine'か、
+コンピュータの採る戦略は乱数'random'か'minimax'か'alphabeta'の何れかを指定するようにします
+
+\begin{lstlisting}[caption=main.py,label=minimax00]
+from Game import Game
+from Params import Params
+
+if __name__ == '__main__':
+    sente = 'human'           # 'machine' or 'human'
+    senryaku = 'alphabeta'        # 'random', 'minimax' or 'alphabeta'
+    game = Game( turn=sente, strategy=senryaku )
+    game.start()
+\end{lstlisting}
+
+\subsection{Machineクラスの変更}
+
+戦略として、alphabetaを選べるように直します
+
+\begin{lstlisting}[caption=class Machine,label=minimax00]
+from random import randint
+from Params import Params
+from Strategy import Strategy
+
+class Machine( Strategy ):
+    def __init__(self, name, strategy):
+        super().__init__()
+        self.name = name
+        self.strategy = strategy
+
+    def put_stone(self, board):
+        vacant = board.vacant()
+        if not vacant:
+            return False
+        if self.strategy=='random':
+            n = randint(0, len(vacant)-1)
+            board.board[ vacant[n] ] = Params.MACHINE_ID
+        elif self.strategy=='minimax':
+            n = self.bestMove(board, vacant)
+            board.board[ n ] = Params.MACHINE_ID
+        elif self.strategy=='alphabeta':
+            n = self.bestMoveAB(board, vacant)
+            board.board[ n ] = Params.MACHINE_ID
+        return True
+\end{lstlisting}
+
+\subsection{Strategyクラスの変更}
+
+具体的な戦略は、こちらのクラスに記述しています
+
+\begin{lstlisting}[caption=class Strategy,label=minimax00]
+from Params import Params, State
+
+class Strategy:
+    INFINITY = 10000
+    def __init__(self):
+        pass
+
+    def bestMove(self, board, vacant):
+            ・
+            変更なし
+            ・
+            ・
+
+    def minimax(self, board, depth, isMaximizingPlayer):
+            ・
+            変更なし
+            ・
+            ・
+
+    def bestMoveAB(self, board, vacant):
+        bestEval = -Strategy.INFINITY
+        bestMove = -1
+        for n in vacant:
+            board.board[n] = Params.MACHINE_ID
+            eval = self.minimaxab(board, 0, 0, False, -Strategy.INFINITY, +Strategy.INFINITY)
+            if bestEval<eval:
+                bestEval = eval
+                bestMove = n
+            board.undo(n)
+        return bestMove
+
+    def minimaxab(self, board, node, depth, isMaximizingPlayer, alpha, beta):
+        def evaluate(depth):
+            if board.state == State.MACHINE_WIN:
+                board.state = State.GAME
+                return 10-depth     #return 10
+            elif board.state == State.HUMAN_WIN:
+                board.state = State.GAME
+                return depth-10     #return -10
+            else:
+                self.state = State.GAME
+                return 0
+
+        board.winner()
+        if board.state != State.GAME:
+            return evaluate(depth)
+
+        bestVal = -Strategy.INFINITY if isMaximizingPlayer else +Strategy.INFINITY
+        for n in range(9):
+            if board.can_put(n):
+                board.board[n] = Params.MACHINE_ID if isMaximizingPlayer else Params.HUMAN_ID
+                value = self.minimaxab(board, node+1, depth+1, not isMaximizingPlayer, alpha, beta)
+                board.undo(n)
+                if isMaximizingPlayer:
+                    bestVal = max(value, bestVal)
+                    alpha = max(alpha, bestVal)
+                else:
+                    bestVal = min(value, bestVal)
+                    beta = min(beta, bestVal)
+                if beta<=alpha:
+                    #print('depth=',depth)
+                    break
+        return bestVal
+\end{lstlisting}
+
+
+
+
+%\section*{謝辞}
+%\addcontentsline{toc}{chapter}{謝辞}
+%
+\begin{thebibliography}{99}
+  \bibitem{1}
+\end{thebibliography}
+%
+% END DOCUMENT
+\end{document}
+%
